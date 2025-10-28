@@ -1,6 +1,6 @@
 const API_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:3000/api' 
-    : 'https://your-app-name.onrender.com/api'; // เปลี่ยนตรงนี้
+    : 'https://smarthomeproject-wr3t.onrender.com/api'; // เปลี่ยนตรงนี้
 
 let currentData = {
     pm25: 12,
@@ -281,3 +281,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
