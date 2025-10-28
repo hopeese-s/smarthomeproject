@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality Control System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="grid-background"></div>
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="brand-icon"></div>
+            <span>AIR CONTROL</span>
+        </div>
+        <div class="nav-status">
+            <span class="status-dot"></span>
+            <span id="connectionStatus">SYSTEM ONLINE</span>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <h1 class="glitch" data-text="INDOOR AIR QUALITY">INDOOR AIR QUALITY</h1>
+            <p class="subtitle">Real-time monitoring system</p>
+            <div class="time-display" id="timeDisplay"></div>
+        </section>
+
+        <div class="room-selector">
+            <button class="room-btn active" data-room="all">ALL ROOMS</button>
+            <button class="room-btn" data-room="livingRoom">LIVING ROOM</button>
+            <button class="room-btn" data-room="bedroom">BEDROOM</button>
+            <button class="room-btn" data-room="kitchen">KITCHEN</button>
+        </div>
+
+        <section class="status-grid">
+            <div class="status-card primary">
+                <div class="card-header">
+                    <span class="card-label">AIR QUALITY</span>
+                    <div class="status-indicator" id="airStatus">
+                        <span class="indicator-dot good"></span>
+                        <span class="indicator-text">EXCELLENT</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="big-number" id="aqiScore">98</div>
+                    <div class="number-label">AQI SCORE</div>
+                </div>
+                <div class="room-label" id="currentRoomLabel">ALL ROOMS</div>
+            </div>
+
+            <div class="sensor-panel">
+                <div class="sensor-item">
+                    <div class="sensor-icon pm25"></div>
+                    <div class="sensor-data">
+                        <span class="sensor-value" id="pm25">12</span>
+                        <span class="sensor-unit">µg/m³</span>
+                    </div>
+                    <div class="sensor-label">PM2.5</div>
+                </div>
+
+                <div class="sensor-item">
+                    <div class="sensor-icon co2"></div>
+                    <div class="sensor-data">
+                        <span class="sensor-value" id="co2">450</span>
+                        <span class="sensor-unit">ppm</span>
+                    </div>
+                    <div class="sensor-label">CO₂</div>
+                </div>
+
+                <div class="sensor-item">
+                    <div class="sensor-icon voc"></div>
+                    <div class="sensor-data">
+                        <span class="sensor-value" id="voc">20</span>
+                        <span class="sensor-unit">ppb</span>
+                    </div>
+                    <div class="sensor-label">VOC</div>
+                </div>
+
+                <div class="sensor-item">
+                    <div class="sensor-icon humidity"></div>
+                    <div class="sensor-data">
+                        <span class="sensor-value" id="humidity">55</span>
+                        <span class="sensor-unit">%</span>
+                    </div>
+                    <div class="sensor-label">HUMIDITY</div>
+                </div>
+
+                <div class="sensor-item">
+                    <div class="sensor-icon temp"></div>
+                    <div class="sensor-data">
+                        <span class="sensor-value" id="temp">28</span>
+                        <span class="sensor-unit">°C</span>
+                    </div>
+                    <div class="sensor-label">TEMP</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="devices-section">
+            <h2 class="section-title">
+                <span class="title-line"></span>
+                ACTIVE DEVICES
+                <span class="title-line"></span>
+            </h2>
+
+            <div class="devices-container">
+                <div class="device-box" id="intakeFan">
+                    <div class="device-header">
+                        <div class="device-badge">01</div>
+                        <div class="power-indicator off"></div>
+                    </div>
+                    <div class="device-icon-large">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="35" stroke="currentColor" fill="none" stroke-width="2"/>
+                            <path d="M50 30 L50 50 L70 50" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <h3>INTAKE FAN</h3>
+                    <div class="device-stats">
+                        <span>Speed: <strong id="fanSpeed">0%</strong></span>
+                        <span>Power: <strong id="fanPower">OFF</strong></span>
+                    </div>
+                </div>
+
+                <div class="device-box" id="hepaFilter">
+                    <div class="device-header">
+                        <div class="device-badge">02</div>
+                        <div class="power-indicator off"></div>
+                    </div>
+                    <div class="device-icon-large">
+                        <svg viewBox="0 0 100 100">
+                            <rect x="20" y="20" width="60" height="60" stroke="currentColor" fill="none" stroke-width="2"/>
+                            <line x1="20" y1="40" x2="80" y2="40" stroke="currentColor" stroke-width="2"/>
+                            <line x1="20" y1="60" x2="80" y2="60" stroke="currentColor" stroke-width="2"/>
+                            <line x1="40" y1="20" x2="40" y2="80" stroke="currentColor" stroke-width="2"/>
+                            <line x1="60" y1="20" x2="60" y2="80" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>HEPA FILTER</h3>
+                    <div class="device-stats">
+                        <span>Status: <strong id="hepaStatus">IDLE</strong></span>
+                        <span>Power: <strong id="hepaPower">OFF</strong></span>
+                    </div>
+                </div>
+
+                <div class="device-box" id="airPurifier">
+                    <div class="device-header">
+                        <div class="device-badge">03</div>
+                        <div class="power-indicator off"></div>
+                    </div>
+                    <div class="device-icon-large">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="15" stroke="currentColor" fill="none" stroke-width="2"/>
+                            <circle cx="50" cy="50" r="25" stroke="currentColor" fill="none" stroke-width="1" opacity="0.5"/>
+                            <circle cx="50" cy="50" r="35" stroke="currentColor" fill="none" stroke-width="1" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <h3>AIR PURIFIER</h3>
+                    <div class="device-stats">
+                        <span>Mode: <strong id="purifierMode">AUTO</strong></span>
+                        <span>Power: <strong id="purifierPower">OFF</strong></span>
+                    </div>
+                </div>
+
+                <div class="device-box" id="windowServo">
+                    <div class="device-header">
+                        <div class="device-badge">04</div>
+                        <div class="power-indicator off"></div>
+                    </div>
+                    <div class="device-icon-large">
+                        <svg viewBox="0 0 100 100">
+                            <rect x="25" y="35" width="50" height="30" stroke="currentColor" fill="none" stroke-width="2"/>
+                            <line x1="25" y1="50" x2="75" y2="50" stroke="currentColor" stroke-width="2"/>
+                            <line x1="50" y1="35" x2="50" y2="65" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>WINDOW SERVO</h3>
+                    <div class="device-stats">
+                        <span>Position: <strong id="windowPosition">CLOSED</strong></span>
+                        <span>Power: <strong id="windowPower">OFF</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="log-section">
+            <h2 class="section-title">
+                <span class="title-line"></span>
+                SYSTEM LOG
+                <span class="title-line"></span>
+            </h2>
+            <div class="log-terminal" id="logTerminal">
+                <div class="log-line">[SYSTEM] Air Quality Control System v2.1 initialized</div>
+                <div class="log-line">[INFO] All sensors connected successfully</div>
+                <div class="log-line">[STATUS] Monitoring started - Air quality: EXCELLENT</div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

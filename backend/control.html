@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel - Backend</title>
+    <link rel="stylesheet" href="control.css">
+</head>
+<body>
+    <div class="control-wrapper">
+        <header class="control-header">
+            <h1>CONTROL PANEL</h1>
+            <div class="admin-badge">ADMIN ACCESS</div>
+        </header>
+
+        <main class="control-container">
+            <section class="control-section">
+                <h2 class="control-title">ROOM SELECTION</h2>
+                
+                <div class="room-selection">
+                    <label class="room-radio">
+                        <input type="radio" name="room" value="all" checked onchange="switchRoom('all')">
+                        <span>ALL ROOMS (Average)</span>
+                    </label>
+                    <label class="room-radio">
+                        <input type="radio" name="room" value="livingRoom" onchange="switchRoom('livingRoom')">
+                        <span>LIVING ROOM</span>
+                    </label>
+                    <label class="room-radio">
+                        <input type="radio" name="room" value="bedroom" onchange="switchRoom('bedroom')">
+                        <span>BEDROOM</span>
+                    </label>
+                    <label class="room-radio">
+                        <input type="radio" name="room" value="kitchen" onchange="switchRoom('kitchen')">
+                        <span>KITCHEN</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="control-section">
+                <h2 class="control-title">SENSOR INPUT - <span id="currentRoomTitle">ALL ROOMS</span></h2>
+                
+                <div class="input-row">
+                    <label>PM2.5 (µg/m³)</label>
+                    <input type="number" id="inputPM25" value="12" min="0" max="500" step="1">
+                    <button onclick="updateValue('pm25')">UPDATE</button>
+                </div>
+
+                <div class="input-row">
+                    <label>CO₂ (ppm)</label>
+                    <input type="number" id="inputCO2" value="450" min="0" max="5000" step="10">
+                    <button onclick="updateValue('co2')">UPDATE</button>
+                </div>
+
+                <div class="input-row">
+                    <label>VOC (ppb)</label>
+                    <input type="number" id="inputVOC" value="20" min="0" max="1000" step="5">
+                    <button onclick="updateValue('voc')">UPDATE</button>
+                </div>
+
+                <div class="input-row">
+                    <label>Humidity (%)</label>
+                    <input type="number" id="inputHumidity" value="55" min="0" max="100" step="1">
+                    <button onclick="updateValue('humidity')">UPDATE</button>
+                </div>
+
+                <div class="input-row">
+                    <label>Temperature (°C)</label>
+                    <input type="number" id="inputTemp" value="28" min="0" max="50" step="0.5">
+                    <button onclick="updateValue('temp')">UPDATE</button>
+                </div>
+            </section>
+
+            <section class="control-section">
+                <h2 class="control-title">DEVICE CONTROL</h2>
+
+                <div class="device-control">
+                    <div class="device-row">
+                        <span class="device-name">Intake Fan</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggleIntakeFan" onchange="toggleDevice('intakeFan')">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="speed-control" id="fanSpeedControl" style="display: none;">
+                        <label>Speed:</label>
+                        <input type="range" id="fanSpeed" min="0" max="100" value="0" onchange="updateFanSpeed()">
+                        <span id="speedValue">0%</span>
+                    </div>
+                </div>
+
+                <div class="device-control">
+                    <div class="device-row">
+                        <span class="device-name">HEPA Filter</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggleHepaFilter" onchange="toggleDevice('hepaFilter')">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="device-control">
+                    <div class="device-row">
+                        <span class="device-name">Air Purifier</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggleAirPurifier" onchange="toggleDevice('airPurifier')">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="device-control">
+                    <div class="device-row">
+                        <span class="device-name">Window Servo</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggleWindowServo" onchange="toggleDevice('windowServo')">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <section class="control-section">
+                <h2 class="control-title">AUTOMATION RULES</h2>
+
+                <div class="rule-item">
+                    <label class="rule-checkbox">
+                        <input type="checkbox" id="rulePM25" checked onchange="toggleRule('pm25')">
+                        <span>PM2.5 > 25 → Turn ON Air Purifier</span>
+                    </label>
+                </div>
+
+                <div class="rule-item">
+                    <label class="rule-checkbox">
+                        <input type="checkbox" id="ruleCO2" checked onchange="toggleRule('co2')">
+                        <span>CO₂ > 1000 → Open Window + Intake Fan</span>
+                    </label>
+                </div>
+
+                <div class="rule-item">
+                    <label class="rule-checkbox">
+                        <input type="checkbox" id="ruleVOC" checked onchange="toggleRule('voc')">
+                        <span>VOC > 100 → Turn ON HEPA Filter</span>
+                    </label>
+                </div>
+
+                <div class="rule-item">
+                    <label class="rule-checkbox">
+                        <input type="checkbox" id="ruleHumidity" checked onchange="toggleRule('humidity')">
+                        <span>Humidity > 65% → Dehumidify Mode</span>
+                    </label>
+                </div>
+            </section>
+
+            <section class="control-section">
+                <h2 class="control-title">QUICK SCENARIOS</h2>
+
+                <div class="scenario-buttons">
+                    <button class="scenario-btn good" onclick="setScenario('good')">
+                        GOOD AIR QUALITY
+                    </button>
+                    <button class="scenario-btn moderate" onclick="setScenario('moderate')">
+                        MODERATE
+                    </button>
+                    <button class="scenario-btn poor" onclick="setScenario('poor')">
+                        POOR AIR QUALITY
+                    </button>
+                    <button class="scenario-btn reset" onclick="setScenario('reset')">
+                        RESET ALL
+                    </button>
+                </div>
+            </section>
+
+            <section class="control-section">
+                <h2 class="control-title">CURRENT STATUS</h2>
+                <div class="status-display" id="statusDisplay">
+                    <p>PM2.5: <strong>12</strong> µg/m³</p>
+                    <p>CO₂: <strong>450</strong> ppm</p>
+                    <p>VOC: <strong>20</strong> ppb</p>
+                    <p>Humidity: <strong>55</strong> %</p>
+                    <p>Temperature: <strong>28</strong> °C</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="control.js"></script>
+</body>
+</html>

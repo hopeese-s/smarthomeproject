@@ -1,0 +1,350 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background: #f5f5f5;
+    color: #1a1a1a;
+}
+
+.control-wrapper {
+    min-height: 100vh;
+}
+
+.control-header {
+    background: #1a1a1a;
+    color: #ffffff;
+    padding: 25px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #00d9ff;
+}
+
+.control-header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 4px;
+}
+
+.admin-badge {
+    background: #00d9ff;
+    color: #1a1a1a;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.control-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 30px;
+}
+
+.control-section {
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+    padding: 30px;
+}
+
+.control-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #1a1a1a;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #00d9ff;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: 150px 1fr auto;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.input-row label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.input-row input {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    background: #f9f9f9;
+    font-size: 16px;
+    font-family: 'Orbitron', monospace;
+    transition: all 0.3s ease;
+}
+
+.input-row input:focus {
+    outline: none;
+    border-color: #00d9ff;
+    background: #ffffff;
+}
+
+.input-row button {
+    padding: 12px 25px;
+    background: #1a1a1a;
+    color: #ffffff;
+    border: none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.input-row button:hover {
+    background: #00d9ff;
+    color: #1a1a1a;
+}
+
+.input-row button:active {
+    transform: scale(0.95);
+}
+
+.device-control {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-left: 3px solid #00d9ff;
+}
+
+.device-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.device-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    display: inline-block;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.3s;
+}
+
+input:checked + .toggle-slider {
+    background-color: #00ff88;
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(30px);
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.speed-control label {
+    font-weight: 600;
+}
+
+.speed-control input[type="range"] {
+    flex: 1;
+    height: 6px;
+    background: #e0e0e0;
+    outline: none;
+}
+
+.speed-control input[type="range"]::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    background: #00d9ff;
+    cursor: pointer;
+}
+
+#speedValue {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    color: #00d9ff;
+    min-width: 50px;
+}
+
+.rule-item {
+    margin-bottom: 15px;
+}
+
+.rule-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.rule-checkbox input {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.rule-checkbox span {
+    font-weight: 500;
+    color: #333;
+}
+
+.scenario-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.scenario-btn {
+    padding: 20px;
+    border: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #ffffff;
+}
+
+.scenario-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.scenario-btn.good {
+    background: #00ff88;
+    color: #1a1a1a;
+}
+
+.scenario-btn.moderate {
+    background: #ffd700;
+    color: #1a1a1a;
+}
+
+.scenario-btn.poor {
+    background: #ff006e;
+}
+
+.scenario-btn.reset {
+    background: #1a1a1a;
+}
+
+.status-display {
+    background: #1a1a1a;
+    color: #ffffff;
+    padding: 25px;
+    font-family: 'Courier New', monospace;
+}
+
+.status-display p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.status-display strong {
+    color: #00d9ff;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .control-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .input-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .scenario-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+
+.room-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.room-radio {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 12px;
+    background: #f9f9f9;
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.room-radio:hover {
+    background: #f0f0f0;
+    border-left-color: #00d9ff;
+}
+
+.room-radio input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #00d9ff;
+}
+
+.room-radio input[type="radio"]:checked + span {
+    color: #00d9ff;
+    font-weight: 700;
+}
+
+.room-radio span {
+    font-weight: 500;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+/* ใช้ CSS เดิมทั้งหมด + เพิ่มส่วนนี้ */
