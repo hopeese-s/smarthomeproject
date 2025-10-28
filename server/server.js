@@ -78,7 +78,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-// Serve backend control
+// Serve backend control (เพิ่มส่วนนี้)
 app.get('/control', (req, res) => {
     res.sendFile(path.join(__dirname, '../backend/control.html'));
 });
