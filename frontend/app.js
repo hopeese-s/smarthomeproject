@@ -1,7 +1,7 @@
 // กำหนด API URL - เปลี่ยนเป็น URL ของ Render เมื่อ deploy แล้ว
 const API_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:3000/api' 
-    : 'https://your-app-name.onrender.com/api'; // เปลี่ยนตรงนี้
+    : 'https://smarthomeproject-wr3t.onrender.com/api'; // เปลี่ยนตรงนี้
 
 let currentRoom = 'all';
 
@@ -245,3 +245,4 @@ setInterval(async () => {
         updateConnectionStatus(false);
     }
 }, 5000);
+
