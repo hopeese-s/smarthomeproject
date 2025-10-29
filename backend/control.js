@@ -1,6 +1,6 @@
 const API_URL = window.location.hostname === 'localhost' 
     ? 'http://localhost:3000/api' 
-    : 'https://smarthomeproject-wr3t.onrender.com/api'; // เปลี่ยนตรงนี้
+    : 'https://smarthomeproject-wr3t.onrender.com/api';
 
 let currentData = {
     pm25: 12,
@@ -141,74 +141,112 @@ function toggleRule(rule) {
     showNotification(`Rule ${rule} ${checkbox.checked ? 'enabled' : 'disabled'}`);
 }
 
-// Check automation
+// Check automation - แก้ไขให้ปิดอัตโนมัติเมื่อค่ากลับมาปกติ
 function checkAutomation() {
     const avgData = currentData;
     
-    if (currentData.rules.pm25 && avgData.pm25 > 25) {
-        document.getElementById('toggleAirPurifier').checked = true;
-        currentData.devices.airPurifier.active = true;
-    } else if (currentData.rules.pm25 && avgData.pm25 < 12) {
-        document.getElementById('toggleAirPurifier').checked = false;
-        currentData.devices.airPurifier.active = false;
+    // PM2.5 rule - แก้ไข: เพิ่มเงื่อนไขปิด
+    if (currentData.rules.pm25) {
+        if (avgData.pm25 > 25) {
+            document.getElementById('toggleAirPurifier').checked = true;
+            currentData.devices.airPurifier.active = true;
+        } else if (avgData.pm25 <= 12) {
+            // ปิดเมื่อค่ากลับมาปกติ
+            document.getElementById('toggleAirPurifier').checked = false;
+            currentData.devices.airPurifier.active = false;
+        }
     }
     
-    if (currentData.rules.co2 && avgData.co2 > 1000) {
-        document.getElementById('toggleWindowServo').checked = true;
-        document.getElementById('toggleIntakeFan').checked = true;
-        currentData.devices.windowServo.active = true;
-        currentData.devices.intakeFan.active = true;
-        document.getElementById('fanSpeedControl').style.display = 'flex';
-        document.getElementById('fanSpeed').value = 75;
-        document.getElementById('speedValue').textContent = '75%';
-        currentData.devices.intakeFan.speed = 75;
-    } else if (currentData.rules.co2 && avgData.co2 < 800) {
-        document.getElementById('toggleWindowServo').checked = false;
-        currentData.devices.windowServo.active = false;
+    // CO2 rule - แก้ไข: เพิ่มเงื่อนไขปิด Intake Fan ด้วย
+    if (currentData.rules.co2) {
+        if (avgData.co2 > 1000) {
+            document.getElementById('toggleWindowServo').checked = true;
+            document.getElementById('toggleIntakeFan').checked = true;
+            currentData.devices.windowServo.active = true;
+            currentData.devices.intakeFan.active = true;
+            document.getElementById('fanSpeedControl').style.display = 'flex';
+            document.getElementById('fanSpeed').value = 75;
+            document.getElementById('speedValue').textContent = '75%';
+            currentData.devices.intakeFan.speed = 75;
+        } else if (avgData.co2 <= 800) {
+            // ปิดทั้ง Window และ Fan เมื่อค่ากลับมาปกติ
+            document.getElementById('toggleWindowServo').checked = false;
+            document.getElementById('toggleIntakeFan').checked = false;
+            currentData.devices.windowServo.active = false;
+            currentData.devices.intakeFan.active = false;
+            document.getElementById('fanSpeedControl').style.display = 'none';
+            currentData.devices.intakeFan.speed = 0;
+        }
     }
     
-    if (currentData.rules.voc && avgData.voc > 100) {
-        document.getElementById('toggleHepaFilter').checked = true;
-        currentData.devices.hepaFilter.active = true;
+    // VOC rule - แก้ไข: เพิ่มเงื่อนไขปิด
+    if (currentData.rules.voc) {
+        if (avgData.voc > 100) {
+            document.getElementById('toggleHepaFilter').checked = true;
+            currentData.devices.hepaFilter.active = true;
+        } else if (avgData.voc <= 50) {
+            // ปิดเมื่อค่ากลับมาปกติ
+            document.getElementById('toggleHepaFilter').checked = false;
+            currentData.devices.hepaFilter.active = false;
+        }
     }
     
     sendToAPI();
 }
 
-// Set scenario
+// Set scenario - แก้ไขให้จำลองค่าจริงๆ และ reset ให้ถูกต้อง
 function setScenario(type) {
-    const scenarios = {
-        good: { pm25: 8, co2: 400, voc: 15, humidity: 50, temp: 25 },
-        moderate: { pm25: 35, co2: 850, voc: 80, humidity: 65, temp: 30 },
-        poor: { pm25: 75, co2: 1500, voc: 200, humidity: 75, temp: 33 },
-        reset: { pm25: 12, co2: 450, voc: 20, humidity: 55, temp: 28 }
-    };
+    let scenarioData;
     
-    if (type === 'reset') {
-        document.querySelectorAll('.toggle-switch input').forEach(cb => cb.checked = false);
-        Object.keys(currentData.devices).forEach(key => {
-            currentData.devices[key].active = false;
-            if (key === 'intakeFan') currentData.devices[key].speed = 0;
-        });
+    switch(type) {
+        case 'good':
+            scenarioData = { pm25: 8, co2: 400, voc: 15, humidity: 50, temp: 25 };
+            break;
+        case 'moderate':
+            scenarioData = { pm25: 35, co2: 850, voc: 80, humidity: 65, temp: 30 };
+            break;
+        case 'poor':
+            scenarioData = { pm25: 75, co2: 1500, voc: 200, humidity: 75, temp: 33 };
+            break;
+        case 'reset':
+            scenarioData = { pm25: 8, co2: 400, voc: 15, humidity: 50, temp: 25 };
+            // ปิดอุปกรณ์ทั้งหมด
+            document.querySelectorAll('.toggle-switch input').forEach(cb => cb.checked = false);
+            Object.keys(currentData.devices).forEach(key => {
+                currentData.devices[key].active = false;
+                if (key === 'intakeFan') {
+                    currentData.devices[key].speed = 0;
+                    document.getElementById('fanSpeedControl').style.display = 'none';
+                }
+            });
+            break;
     }
     
-    const values = scenarios[type];
-    Object.keys(values).forEach(key => {
+    // อัพเดทค่าทั้งหมด
+    Object.keys(scenarioData).forEach(key => {
         const inputId = `input${key.charAt(0).toUpperCase() + key.slice(1)}`;
-        document.getElementById(inputId).value = values[key];
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.value = scenarioData[key];
+        }
         
+        // อัพเดท currentData
         if (currentData.currentRoom === 'all') {
-            currentData[key] = values[key];
+            currentData[key] = scenarioData[key];
             Object.keys(currentData.rooms).forEach(room => {
-                currentData.rooms[room][key] = values[key];
+                currentData.rooms[room][key] = scenarioData[key];
             });
         } else {
-            currentData.rooms[currentData.currentRoom][key] = values[key];
+            currentData.rooms[currentData.currentRoom][key] = scenarioData[key];
         }
     });
     
+    // ถ้าเป็น scenario ที่ไม่ใช่ reset ให้เช็ค automation
+    if (type !== 'reset') {
+        checkAutomation();
+    }
+    
     sendToAPI();
-    checkAutomation();
     updateStatusDisplay();
     showNotification(`Scenario: ${type.toUpperCase()} applied`);
 }
@@ -266,7 +304,7 @@ function showNotification(message) {
 // Initialize
 window.addEventListener('load', () => {
     updateStatusDisplay();
-    setInterval(sendToAPI, 5000); // Auto-sync every 5 seconds
+    setInterval(sendToAPI, 5000);
 });
 
 const style = document.createElement('style');
@@ -281,4 +319,3 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
