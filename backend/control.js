@@ -203,7 +203,7 @@ function setScenario(type) {
             scenarioData = { pm25: 8, co2: 400, voc: 15, humidity: 50, temp: 25 };
             break;
         case 'moderate':
-            scenarioData = { pm25: 35, co2: 850, voc: 80, humidity: 65, temp: 30 };
+            scenarioData = { pm25: 35, co2: 1200, voc: 80, humidity: 65, temp: 30 };
             break;
         case 'poor':
             scenarioData = { pm25: 75, co2: 1500, voc: 200, humidity: 75, temp: 33 };
@@ -319,3 +319,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
